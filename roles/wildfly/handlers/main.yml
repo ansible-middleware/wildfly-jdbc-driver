@@ -1,0 +1,5 @@
+---
+- name: 'Restart Wildfly'
+  service:
+    name: wildfly
+    state: restarted

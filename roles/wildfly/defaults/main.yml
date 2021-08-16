@@ -1,0 +1,25 @@
+---
+wfly_version: 19.0.0.Final
+workdir: /opt/wildfly/
+wfly_zipfile: "wildfly-{{ wfly_version }}.zip"
+wfly_download_url: https://download.jboss.org/wildfly/{{ wfly_version }}/{{ wfly_zipfile }}
+java:
+  home: /usr/lib/jvm/java-1.8.0
+wildfly:
+  home: "{{ workdir }}/wildfly-{{ wfly_version }}/"
+  user: wildfly
+  group: wildfly
+  bind_addr: "{{ override_wildfly_bind_addr | default('0.0.0.0') }}"
+  config:
+    base: standalone-ha.xml
+postgres:
+  user:
+    name: wildfly
+    password: wildfly
+# can't use a structure for the jdbc_driver because of the interpolation between variables.
+jdbc_driver_module_dir: "{{ wildfly.home }}//modules/org/postgresql/main"
+jdbc_driver_version: 9.2-1002-jdbc4
+jdbc_driver_jar_filename: "postgresql-{{ jdbc_driver_version }}.jar"
+jdbc_driver_jar_url: "https://repo.maven.apache.org/maven2/org/postgresql/postgresql/{{ jdbc_driver_version }}/{{ jdbc_driver_jar_filename }}"
+jdbc_driver_jar_installation_path: "{{ jdbc_driver_module_dir }}/{{ jdbc_driver_jar_filename }}"
+jcliff_home: /usr/share/jcliff

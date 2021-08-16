@@ -1,0 +1,20 @@
+---
+- set_fact:
+    packages_list:
+    - zip
+    - unzip
+    - procps-ng
+    - initscripts
+    - "{{ jvm_package | default('java-1.8.0-openjdk-devel') }}"
+    - firewalld
+
+- name: "Ensures required packages are installed"
+  include_role:
+    name: fastpackages
+
+- name: "Ensures firewalld service is enabled and running"
+  become: yes
+  systemd:
+    name: firewalld
+    enabled: yes
+    state: started

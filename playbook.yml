@@ -1,0 +1,9 @@
+---
+- name: Demo playbook for setting up a JDBC driver in Wildfly
+  hosts: localhost
+  collections:
+    - middleware_automation.jcliff
+  roles:
+    - jcliff
+    - wildfly
+  tasks:

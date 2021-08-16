@@ -1,0 +1,23 @@
+---
+- name: "Fine tune Wildfly configuration"
+  jcliff:
+    wfly_home: "{{ wildfly.home }}"
+    timeout: 7000
+    components:
+      - drivers:
+          - driver_name: postgresql
+            driver_module_name: org.postgresql
+            driver_class_name: org.postgresql.Driver
+            driver_xa_datasource_class_name: org.postgresql.xa.PGXADataSource
+      - datasources:
+          - name: "psqldb"
+            use_java_context: 'true'
+            jndi_name: "java:jboss/datasources/pgsqlds"
+            connection_url: "jdbc:postgresql://localhost:5432/pgsql"
+            driver_name: postgresql
+            user_name: "{{ postgres.user.name }}"
+            password: "{{ postgres.user.password }}"
+  environment:
+    JAVA_HOME: "{{ java.home }}"
+  notify:
+    - 'Restart Wildfly'

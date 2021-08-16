@@ -1,0 +1,22 @@
+---
+
+- name: "Install Prerequisites"
+  include_tasks: prereqs.yml
+
+- name: "Install Widfly"
+  include_tasks: install-wildfly.yml
+
+- name: "Install Postresql driver"
+  include_tasks: pgsql_jdbc_driver.yml
+
+- name: "Set up Wildfly as a systemd service"
+  include_tasks: set-up-wildfy-service.yml
+
+- name: "Wait for Wildfly CLI port to be available"
+  wait_for:
+    host: 127.0.0.1
+    port: 9990
+    delay: 5
+
+- name: "Configure JDBC Driver and DS"
+  include_tasks: jcliff.yml
